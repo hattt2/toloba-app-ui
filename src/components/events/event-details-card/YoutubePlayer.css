@@ -1,0 +1,28 @@
+.vjs-tech {
+  pointer-events: none;
+}
+
+.video-js.vjs-paused .vjs-poster {
+  display: block;
+}
+
+.video-js.vjs-seeking .vjs-poster {
+  display: block;
+}
+
+.video-js.vjs-ended .vjs-poster {
+  display: block;
+}
+
+.vjs-big-play-button {
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%);
+  -webkit-border-radius: 0.8em !important;
+  -moz-border-radius: 0.8em !important;
+  border-radius: 1.9em !important;
+}
+
+.vjs-loading-spinner {
+  display: none !important;
+}

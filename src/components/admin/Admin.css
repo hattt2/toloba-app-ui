@@ -1,0 +1,15 @@
+@media (min-width: 993px) {
+  .admin-content {
+    margin-left: 240px;
+  }
+}
+
+.side-nav .logo-wrapper img {
+  padding-top: 20px !important;
+}
+
+.side-nav .logo-wrapper,
+.side-nav .logo-wrapper a {
+  height: 175px !important;
+  cursor: default;
+}

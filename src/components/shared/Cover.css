@@ -1,0 +1,30 @@
+.header {
+  position: relative;
+  top: -15px;
+  margin-bottom: -125px;
+}
+
+.header::after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+/* Mobile Device */
+@media (max-width: 700px) {
+  .header::after {
+    background: url("../../assets/edge-header-cover.png");
+    background-position: center center;
+    background-size: cover;
+  }
+}
+
+/* Laptop/PC/TV */
+@media (min-width: 701px) {
+  .header::after {
+    background: url("../../assets/edge-header-cover.png");
+    background-position: center center;
+    background-size: cover;
+  }
+}

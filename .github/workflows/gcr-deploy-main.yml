@@ -1,0 +1,115 @@
+name: Google Cloud Run Deploy (Main)
+# https://github.com/google-github-actions/setup-gcloud
+on:
+  push:
+    branches:
+      - master
+
+env:
+  PROJECT_ID: ${{ secrets.GCR_PROJECT }}
+  RUN_REGION: asia-northeast1
+  SERVICE_NAME: ${{ vars.GCR_SERVICE_NAME }}
+  REACT_APP_AIRTABLE_KEY: ${{ secrets.REACT_APP_AIRTABLE_KEY }}
+  REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+  REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
+  REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
+  REACT_APP_FIREBASE_DATABASE_URL: ${{ secrets.REACT_APP_FIREBASE_DATABASE_URL }}
+  REACT_APP_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.REACT_APP_FIREBASE_MESSAGING_SENDER_ID }}
+  REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+  REACT_APP_FIREBASE_STORAGE_BUCKET: ${{ secrets.REACT_APP_FIREBASE_STORAGE_BUCKET }}
+  REACT_APP_MEET_SECRET_KEY: ${{ secrets.REACT_APP_MEET_SECRET_KEY }}
+  REACT_APP_SHORT_NAME: ${{ vars.REACT_APP_SHORT_NAME }}
+  REACT_APP_AIRTABLE_BASE_URL: ${{ vars.REACT_APP_AIRTABLE_BASE_URL }}
+  REACT_APP_AIRTABLE_STUFF_APP_ID: ${{ vars.REACT_APP_AIRTABLE_STUFF_APP_ID }}
+  REACT_APP_API_BASE_URL: ${{ vars.REACT_APP_API_BASE_URL }}
+  REACT_APP_AUTH_TOKEN_KEY: ${{ vars.REACT_APP_AUTH_TOKEN_KEY }}
+  REACT_APP_DEFAULT_PASSWORD: ${{ vars.REACT_APP_DEFAULT_PASSWORD }}
+  REACT_APP_DEFAULT_SCREEN_LIMIT: ${{ vars.REACT_APP_DEFAULT_SCREEN_LIMIT }}
+  REACT_APP_DOMAIN: ${{ vars.REACT_APP_DOMAIN }}
+  REACT_APP_FULL_NAME: ${{ vars.REACT_APP_FULL_NAME }}
+  REACT_APP_JAMAAT_NAME: ${{ vars.REACT_APP_JAMAAT_NAME }}
+  REACT_APP_MEET_BASE_URL: ${{ vars.REACT_APP_MEET_BASE_URL }}
+  REACT_APP_SESSION_KEY: ${{ vars.REACT_APP_SESSION_KEY }}
+
+jobs:
+  build:
+    name: Build React App
+    runs-on: ubuntu-latest
+    # Jamaat wise environment
+    environment: toloba-app
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Setup Node.js (NPM)
+        uses: actions/setup-node@master
+        with:
+          node-version: "14.15.1"
+
+      - name: Use cached node_modules
+        uses: actions/cache@master
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        env:
+          CI: false
+
+      - name: Build Development
+        run: yarn build
+        env:
+          CI: false
+
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build
+          path: build
+
+  deploy-gcr:
+    name: Deploy to GCR
+    needs: build
+    runs-on: ubuntu-latest
+    # Jamaat wise environment
+    environment: toloba-app
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: build
+          path: .docker/build
+
+      - name: Setup GCloud Auth
+        id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GCR_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.1
+
+      # Build and push image to Google Container Registry
+      - name: Build & Push
+        run: |-
+          gcloud builds submit \
+            --quiet \
+            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+        working-directory: .docker
+
+      # Deploy image to Cloud Run
+      - name: Deploy GCR
+        run: |-
+          gcloud run deploy "$SERVICE_NAME" \
+            --quiet \
+            --region "$RUN_REGION" \
+            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --platform "managed" \
+            --allow-unauthenticated
