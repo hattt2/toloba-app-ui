@@ -21,13 +21,16 @@ import { hasAdminAccess } from "../../store/users/admin/UsersAdminSelector";
 import { getLoadStatus, getTotalRequest } from "../../store/LoadingSlice";
 import { logout } from "../../store/auth/AuthThunk";
 
-// assets imports
-import logo from "../../assets/logo.png";
+// service imports
+import assetsService from "../../services/assetsService";
 
 // constants
 const APP_SHORT_NAME = process.env.REACT_APP_SHORT_NAME;
+const APP_LOGO_NAME = process.env.REACT_APP_LOGO_NAME;
 
 export default function Navbar() {
+  const logo = assetsService.getSrcUrl(APP_LOGO_NAME);
+
   // store
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);

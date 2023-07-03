@@ -1,9 +1,6 @@
 import React from "react";
 import { MDBSideNav, MDBSideNavNav, MDBIcon, MDBSideNavLink } from "mdbreact";
 
-// assets imports
-import logo from "../../assets/logo.png";
-
 // store
 import { useSelector } from "react-redux";
 import {
@@ -11,10 +8,16 @@ import {
   hasSuperAdminAccess,
 } from "../../store/users/admin/UsersAdminSelector";
 
+// service imports
+import assetsService from "../../services/assetsService";
+
 // constants
 const APP_SHORT_NAME = process.env.REACT_APP_SHORT_NAME;
+const APP_LOGO_NAME = process.env.REACT_APP_LOGO_NAME;
 
 export default function SideNav({ isOpen }) {
+  const logo = assetsService.getSrcUrl(APP_LOGO_NAME);
+
   // store
   const permissionForUsersRead = useSelector((state) =>
     hasPermissionForResource(state, "USERS", "READ")

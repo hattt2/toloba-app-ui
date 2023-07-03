@@ -21,18 +21,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "../../store/auth/AuthSelector";
 import { login } from "../../store/auth/AuthThunk";
 
-// assets imports
-import logo from "../../assets/logo.png";
-
 // CSS imports
 import "./HomePage.css";
+
+// service imports
+import assetsService from "../../services/assetsService";
 
 // constants
 const APP_SHORT_NAME = process.env.REACT_APP_SHORT_NAME;
 const JAMAAT_NAME = process.env.REACT_APP_JAMAAT_NAME;
 const DEFAULT_PASSWORD = process.env.REACT_APP_DEFAULT_PASSWORD;
+const APP_LOGO_NAME = process.env.REACT_APP_LOGO_NAME;
 
 export default function HomePage() {
+  const logo = assetsService.getSrcUrl(APP_LOGO_NAME);
+
   // store
   const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);

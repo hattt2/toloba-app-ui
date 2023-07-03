@@ -14,7 +14,7 @@
 /* Mobile Device */
 @media (max-width: 700px) {
   .header::after {
-    background: url("../../assets/edge-header-cover.png");
+    background: url("https://storage.googleapis.com/toloba-app-assets/edge-header-cover.png");
     background-position: center center;
     background-size: cover;
   }
@@ -23,7 +23,7 @@
 /* Laptop/PC/TV */
 @media (min-width: 701px) {
   .header::after {
-    background: url("../../assets/edge-header-cover.png");
+    background: url("https://storage.googleapis.com/toloba-app-assets/edge-header-cover.png");
     background-position: center center;
     background-size: cover;
   }
