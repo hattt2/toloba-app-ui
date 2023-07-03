@@ -1,4 +1,4 @@
-name: Google Cloud Run Deploy (Main)
+name: Google Cloud Run Deploy (AEV)
 # https://github.com/google-github-actions/setup-gcloud
 on:
   push:
@@ -32,6 +32,8 @@ env:
   REACT_APP_SESSION_KEY: ${{ vars.REACT_APP_SESSION_KEY }}
   REACT_APP_FAVICON_URL: ${{ vars.REACT_APP_FAVICON_URL }}
   REACT_APP_LOGO_NAME: ${{ vars.REACT_APP_LOGO_NAME }}
+  REACT_APP_META_DESC: ${{ vars.REACT_APP_META_DESC }}
+  REACT_APP_META_KEYWORDS: ${{ vars.REACT_APP_META_KEYWORDS }}
 
 jobs:
   build:
