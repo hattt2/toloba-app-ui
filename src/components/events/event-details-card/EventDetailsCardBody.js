@@ -23,10 +23,6 @@ export default function EventDetailsCardBody({ event }) {
 
   return (
     <MDBCardBody>
-      Event Body -{" "}
-      <div>
-        <pre>{JSON.stringify(event, null, 2)}</pre>
-      </div>
       <div className="text-center mb-2">{event.desc}</div>
       {event.type === "youtube" ? (
         <YoutubePlayer sourceLink={sourceLink} />
