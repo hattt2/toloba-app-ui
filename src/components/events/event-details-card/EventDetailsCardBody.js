@@ -14,17 +14,20 @@ export default function EventDetailsCardBody({ event }) {
     try {
       if (!jwt) return;
       const decoded = jwtDecode(jwt);
-      if (Date.now() >= decoded.exp * 1000) return null;
       return decoded.link;
     } catch (ex) {
+      console.log("Error in decoding source link", ex);
       return null;
     }
   }
 
   return (
     <MDBCardBody>
+      Event Body -{" "}
+      <div>
+        <pre>{JSON.stringify(event, null, 2)}</pre>
+      </div>
       <div className="text-center mb-2">{event.desc}</div>
-
       {event.type === "youtube" ? (
         <YoutubePlayer sourceLink={sourceLink} />
       ) : (
