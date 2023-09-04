@@ -9,6 +9,7 @@ import IFramePlayer from "./IFramePlayer";
 export default function EventDetailsCardBody({ event }) {
   // local vars
   const sourceLink = decodeLink(event?.link);
+  const audioOnly = event?.desc?.includes("AUDIO ONLY");
 
   function decodeLink(jwt) {
     try {
@@ -25,7 +26,7 @@ export default function EventDetailsCardBody({ event }) {
     <MDBCardBody>
       <div className="text-center mb-2">{event.desc}</div>
       {event.type === "youtube" ? (
-        <YoutubePlayer sourceLink={sourceLink} />
+        <YoutubePlayer sourceLink={sourceLink} audioOnly={audioOnly} />
       ) : (
         <IFramePlayer sourceLink={sourceLink} />
       )}

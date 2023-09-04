@@ -9,10 +9,11 @@ import "videojs-youtube/dist/Youtube";
 import "video.js/dist/video-js.css";
 import "./YoutubePlayer.css";
 
-export default function YoutubePlayer({ sourceLink }) {
+export default function YoutubePlayer({ sourceLink, audioOnly }) {
   const playerOptions = {
     controls: true,
     autoplay: "play",
+    height: audioOnly ? "0%" : "100%",
   };
 
   const resources = {
