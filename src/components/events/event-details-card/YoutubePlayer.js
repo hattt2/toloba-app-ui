@@ -15,7 +15,7 @@ export default function YoutubePlayer({ sourceLink, audioOnly = false }) {
   const playerOptions = {
     controls: true,
     autoplay: "play",
-    audioOnlyMode: audioOnly,
+    audioPosterMode: audioOnly,
   };
 
   const resources = {
