@@ -9,12 +9,13 @@ import "videojs-youtube/dist/Youtube";
 import "video.js/dist/video-js.css";
 import "./YoutubePlayer.css";
 
-export default function YoutubePlayer({ sourceLink, audioOnly }) {
+export default function YoutubePlayer({ sourceLink, audioOnly = false }) {
   console.log("AUDIO ONLY", audioOnly);
 
   const playerOptions = {
     controls: true,
     autoplay: "play",
+    audioOnlyMode: audioOnly,
   };
 
   const resources = {
@@ -35,13 +36,9 @@ export default function YoutubePlayer({ sourceLink, audioOnly }) {
   const onPlayerReady = (player) => {
     console.log("Player Ready!");
 
-    if (audioOnly) {
-      document.getElementsByClassName("vjs-poster")[0].style.display = "block";
-    } else {
-      document
-        .getElementsByClassName("vjs-poster")[0]
-        .classList.remove("vjs-hidden");
-    }
+    document
+      .getElementsByClassName("vjs-poster")[0]
+      .classList.remove("vjs-hidden");
   };
 
   if (!sourceLink) return "";
