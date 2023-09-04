@@ -10,10 +10,11 @@ import "video.js/dist/video-js.css";
 import "./YoutubePlayer.css";
 
 export default function YoutubePlayer({ sourceLink, audioOnly }) {
+  console.log("AUDIO ONLY", audioOnly);
+
   const playerOptions = {
     controls: true,
     autoplay: "play",
-    height: audioOnly ? "0%" : "100%",
   };
 
   const resources = {
@@ -34,9 +35,13 @@ export default function YoutubePlayer({ sourceLink, audioOnly }) {
   const onPlayerReady = (player) => {
     console.log("Player Ready!");
 
-    document
-      .getElementsByClassName("vjs-poster")[0]
-      .classList.remove("vjs-hidden");
+    if (audioOnly) {
+      document.getElementsByClassName("vjs-poster")[0].style.display = "block";
+    } else {
+      document
+        .getElementsByClassName("vjs-poster")[0]
+        .classList.remove("vjs-hidden");
+    }
   };
 
   if (!sourceLink) return "";
