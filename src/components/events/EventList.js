@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { MDBCard, MDBCardBody, MDBCardHeader } from "mdbreact";
+import {
+  MDBAlert,
+  MDBCard,
+  MDBCardBody,
+  MDBCardHeader,
+  MDBIcon,
+} from "mdbreact";
 
 // store imports
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +21,7 @@ export default function EventList() {
   const dispatch = useDispatch();
   const events = useSelector(selectAccessibleEvents);
   const currentUser = useSelector(selectCurrentUser);
+  const eventListStatus = useSelector((state) => state.events.status);
 
   useEffect(() => {
     dispatch(fetchAccessibleEvents());
@@ -30,7 +37,21 @@ export default function EventList() {
     ));
   }
 
-  if (!events || !events.length) return "";
+  if (eventListStatus !== "succeeded") return "";
+
+  if (!events?.length)
+    return (
+      <MDBCard style={{ marginBottom: "2rem" }}>
+        <div className="m-3">
+          <MDBAlert color="danger">RAZA NOT GRANTED</MDBAlert>
+
+          <div className="text-primary">
+            <MDBIcon icon="info-circle" className="mr-2" /> Contact
+            Anjuman-e-Vajihi Office.
+          </div>
+        </div>
+      </MDBCard>
+    );
 
   return (
     <MDBCard style={{ marginBottom: "2rem" }}>
