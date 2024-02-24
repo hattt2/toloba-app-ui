@@ -1,6 +1,6 @@
 # Toloba App
 
-A frontend react application for toloba ujjain
+A frontend react application for toloba ujjain.
 
 ## Getting Started
 
