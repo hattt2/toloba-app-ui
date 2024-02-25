@@ -69,7 +69,7 @@ jobs:
           CI: false
 
       - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: build
           path: build
@@ -86,7 +86,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Download Artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v3
         with:
           name: build
           path: .docker/build
