@@ -6,6 +6,7 @@ import {
   fetchAdmins,
   updateUser,
   bulkInsert,
+  insertUser,
 } from "./UsersAdminThunk";
 
 export const initialState = {
@@ -13,6 +14,7 @@ export const initialState = {
   stats: null,
   status: "idle",
   bulkInsertStatus: "idle",
+  insertUserStatus: "idle",
 };
 
 export const reducers = {
@@ -63,7 +65,7 @@ export function extraReducers(builder) {
       MDBToast.error("Unable to update.");
     })
 
-    // updateUser
+    // bulkInsert
     .addCase(bulkInsert.pending, (state, _action) => {
       state.bulkInsertStatus = "loading";
     })
@@ -74,5 +76,18 @@ export function extraReducers(builder) {
     .addCase(bulkInsert.rejected, (state, _action) => {
       state.bulkInsertStatus = "failed";
       MDBToast.error("Unable to add users.");
+    })
+
+    // insertUser
+    .addCase(insertUser.pending, (state, _action) => {
+      state.insertUserStatus = "loading";
+    })
+    .addCase(insertUser.fulfilled, (state, { payload: message }) => {
+      state.insertUserStatus = "succeeded";
+      MDBToast.success(message);
+    })
+    .addCase(insertUser.rejected, (state, _action) => {
+      state.insertUserStatus = "failed";
+      MDBToast.error("Unable to add user.");
     });
 }

@@ -53,6 +53,15 @@ export const bulkInsert = createAsyncThunk(
   }
 );
 
+export const insertUser = createAsyncThunk(
+  "adminUsers/insertUser",
+  async (user, { dispatch }) => {
+    const { data: resData } = await usersAdminService.insertUser(user);
+    dispatch(fetchStats());
+    return resData.data;
+  }
+);
+
 export const fetchStats = createAsyncThunk(
   "adminUsers/fetchStats",
   async (_payload, { dispatch }) => {

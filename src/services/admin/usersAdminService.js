@@ -14,6 +14,10 @@ function fetchStats() {
   return http.adminGet(`${apiEndpoint}/stats`);
 }
 
+function insertUser(user) {
+  return http.adminPost(`${apiEndpoint}`, user);
+}
+
 function bulkInsert(users) {
   return http.adminPost(`${apiEndpoint}/bulk`, users);
 }
@@ -26,6 +30,7 @@ export default {
   fetchUsers,
   fetchUsersByHofIts,
   fetchStats,
+  insertUser,
   bulkInsert,
   updateUser,
 };

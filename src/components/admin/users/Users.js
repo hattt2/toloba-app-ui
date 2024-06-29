@@ -7,6 +7,7 @@ import UploadCsvButton from "./UploadCsvButton";
 import SearchUser from "../shared/SearchUser";
 import FamilyDetails from "./FamilyDetails";
 import UserStats from "./UserStats";
+import AddUserModal from "./AddUserModal";
 
 // store imports
 import { useSelector } from "react-redux";
@@ -26,9 +27,7 @@ export default function Users() {
 
     return (
       <>
-        {/* <MDBBtn color="info" className="btn btn-sm">
-          Add Guest
-        </MDBBtn> */}
+        <AddUserModal></AddUserModal>
         <UploadCsvButton></UploadCsvButton>
       </>
     );

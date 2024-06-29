@@ -9,6 +9,7 @@ import { hasPermissionForResource } from "../../../../store/users/admin/UsersAdm
 import ResetPasswordModal from "./ResetPasswordModal";
 import ScreenLimitPopover from "./ScreenLimitPopover";
 import UserPermissionsModal from "./UserPermissionsModal";
+import MagicTokenModal from "./MagicTokenModal";
 
 export default function UserDetailsCardFooter({
   user,
@@ -32,6 +33,10 @@ export default function UserDetailsCardFooter({
 
         {showResetPasswordOption && (
           <ResetPasswordModal user={user}></ResetPasswordModal>
+        )}
+
+        {showResetPasswordOption && (
+          <MagicTokenModal user={user}></MagicTokenModal>
         )}
 
         {showEditPermissionsOption && (
