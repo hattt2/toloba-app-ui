@@ -9,8 +9,8 @@ import { fetchProfile } from "../users/UsersThunk";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ itsNumber, password }, { dispatch }) => {
-    const user = await authService.login(itsNumber, password);
+  async ({ itsNumber, password, magicToken }, { dispatch }) => {
+    const user = await authService.login(itsNumber, password, magicToken);
     dispatch(fetchProfile());
     dispatch(setCurrentUserId(user?._id));
   }

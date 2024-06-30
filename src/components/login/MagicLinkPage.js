@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import {
   MDBContainer,
@@ -9,17 +9,20 @@ import {
   MDBMask,
   MDBView,
   MDBAnimation,
+  MDBBtn,
   MDBCard,
   MDBCardBody,
+  MDBInput,
   MDBToastContainer,
 } from "mdbreact";
 
 // store imports
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "../../store/auth/AuthSelector";
+import { login } from "../../store/auth/AuthThunk";
 
 // CSS imports
-import "./HomePage.css";
+import "./LoginPage.css";
 
 // service imports
 import assetsService from "../../services/assetsService";
@@ -29,22 +32,50 @@ const APP_SHORT_NAME = process.env.REACT_APP_SHORT_NAME;
 const JAMAAT_NAME = process.env.REACT_APP_JAMAAT_NAME;
 const APP_LOGO_NAME = process.env.REACT_APP_LOGO_NAME;
 
-export default function HomePage() {
+export default function MagicLinkPage() {
   const logo = assetsService.getSrcUrl(APP_LOGO_NAME);
 
   // store
+  const dispatch = useDispatch();
   const currentUser = useSelector(selectCurrentUser);
+  const authStatus = useSelector((state) => state.auth.status);
+
+  // local state
+  const [magicToken, setMagicToken] = useState(null);
 
   // route
   const redirectUrl = useQuery().get("redirect_to");
+  const token = useQuery().get("magictoken");
 
   useEffect(() => {
     if (currentUser) window.location = redirectUrl || "/dashboard";
+
+    if (token) {
+      dispatch(login({ magicToken: token }));
+    }
   }, [currentUser, redirectUrl]);
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    event.target.className += " was-validated";
+
+    // if form is valid then save and proceed
+    if (event.target.checkValidity()) {
+      dispatch(login({ magicToken }));
+    }
+  };
+
+  const handleInput = (magicToken) => {
+    if (magicToken.length > 5) {
+      setMagicToken(magicToken);
+    } else {
+      setMagicToken(null);
+    }
+  };
 
   const renderNavbar = () => {
     return (
@@ -71,7 +102,7 @@ export default function HomePage() {
     );
   };
 
-  const renderInfo = () => {
+  const renderLoginForm = () => {
     return (
       <MDBContainer>
         <MDBRow center>
@@ -79,7 +110,38 @@ export default function HomePage() {
             <MDBAnimation type="fadeInRight" delay=".3s">
               <MDBCard id="classic-card">
                 <MDBCardBody className="white-text">
-                  This is an official website of {JAMAAT_NAME}
+                  <h3 className="text-center">Enter Magic Token</h3>
+                  <hr className="hr-light" />
+
+                  <form
+                    className="needs-validation"
+                    noValidate
+                    onSubmit={submitHandler}
+                  >
+                    <MDBInput
+                      onInput={(e) => handleInput(e.target.value)}
+                      label="Magic Token"
+                      name="magicToken"
+                      className="white-text"
+                      iconClass="white-text"
+                      required
+                      minLength="6"
+                    >
+                      <div className="invalid-feedback ml-5">
+                        Invalid magic token
+                      </div>
+                    </MDBInput>
+
+                    <div className="text-center mt-4 black-text">
+                      <MDBBtn
+                        disabled={authStatus === "loading" || !magicToken}
+                        color="primary"
+                        type="submit"
+                      >
+                        Login
+                      </MDBBtn>
+                    </div>
+                  </form>
                 </MDBCardBody>
               </MDBCard>
             </MDBAnimation>
@@ -106,7 +168,7 @@ export default function HomePage() {
 
       <MDBView>
         <MDBMask className="d-flex justify-content-center align-items-center gradient">
-          {renderInfo()}
+          {renderLoginForm()}
         </MDBMask>
       </MDBView>
     </div>

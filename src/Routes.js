@@ -6,6 +6,8 @@ import NotFound from "./components/shared/NotFound";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import EmbeddableForm from "./components/shared/EmbeddableForm";
 import HomePage from "./components/home/HomePage";
+import LoginPage from "./components/login/LoginPage";
+import MagicLinkPage from "./components/login/MagicLinkPage";
 import Dashboard from "./components/dashboard/Dashboard";
 import EventDetails from "./components/events/EventDetails";
 import EditProfile from "./components/profile/EditProfile";
@@ -17,6 +19,8 @@ class Routes extends React.Component {
     return (
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route exact path="/itslogin" component={LoginPage} />
+        <Route exact path="/magiclink" component={MagicLinkPage} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <Redirect exact path="/live" to="/dashboard" />
         <PrivateRoute path="/profile" component={EditProfile} />

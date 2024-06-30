@@ -9,10 +9,11 @@ const AUTH_HEADER_KEY = "x-auth-token";
 const apiEndpoint = "/auth";
 const rolesApiEndpoint = "/roles";
 
-async function login(itsNumber, password) {
+async function login(itsNumber, password, magicToken) {
   const { headers } = await http.post(apiEndpoint, {
     itsNumber,
     password,
+    magicToken,
   });
 
   const jwt = headers[AUTH_HEADER_KEY];
